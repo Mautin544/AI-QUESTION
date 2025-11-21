@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Question Answering</title>
+</head>
+<body>
+
+    <h2>Ask the AI a Question</h2>
+
+    <form id="askForm">
+        <input type="text" id="question" name="question" placeholder="Write your question..." required>
+        <button type="submit">Ask</button>
+    </form>
+
+    <h3>Response:</h3>
+    <p id="response"></p>
+
+    <script>
+        document.getElementById("askForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            let question = document.getElementById("question").value;
+
+            let res = await fetch("/ask", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/x-www-form-urlencoded" 
+                },
+                body: "question=" + encodeURIComponent(question)
+            });
+
+            let data = await res.json();
+            document.getElementById("response").innerText = data.answer;
+        });
+    </script>
+
+</body>
+</html>
